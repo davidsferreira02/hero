@@ -4,6 +4,7 @@ plugins {
 }
 application {
     mainClass.set("Application")
+
 }
 
 
