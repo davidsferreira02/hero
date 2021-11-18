@@ -26,27 +26,27 @@ public class Game {
             screen.startScreen(); // screens must be started
             screen.doResizeIfNecessary(); // resize screen if necessary
             screen.clear();
-            screen.setCharacter(10, 10, TextCharacter.fromCharacter('X')[0]);
+            screen.setCharacter(x,y,TextCharacter.fromCharacter('X')[0]);
             screen.refresh();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
     }
-
-    public void run() {
+   public void run() {
         draw();
-        }
-        private void draw(){
-            screen.clear();
-            screen.setCharacter(10, 10,
-                    TextCharacter.fromCharacter('X')[0]);
-            try {
-                screen.refresh();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+       readInput();
+     processKey(screen.readInput());
+}
+       private void draw(){
+           screen.clear();
+           screen.setCharacter(10, 10,
+                   TextCharacter.fromCharacter('X')[0]);
+           try {
+               screen.refresh();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
 
-        }
-        }
+       }
+}
