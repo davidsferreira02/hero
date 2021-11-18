@@ -1,23 +1,18 @@
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class Game {
     private int x=10;
     private int y=10;
-    private void readInput() {
-        KeyStroke Key = screen.readInput();
-    }
 
     private static  Screen screen ;
-    private void processKey(KeyStroke key){
-        System.out.println(key);
-    }
+
     public Game (){
         try {
             Terminal terminal = new DefaultTerminalFactory().createTerminal();
@@ -33,11 +28,15 @@ public class Game {
         }
 
     }
-   public void run() {
+   public void run() throws IOException {
         draw();
-       readInput();
-     processKey(screen.readInput());
+     KeyStroke key=screen.readInput();
+     processKey(key);
+
 }
+    private void processKey(com.googlecode.lanterna.input.KeyStroke key){
+        System.out.println(key);
+    }
        private void draw(){
            screen.clear();
            screen.setCharacter(10, 10,
@@ -49,4 +48,4 @@ public class Game {
            }
 
        }
-}
+   }
