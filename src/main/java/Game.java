@@ -34,40 +34,45 @@ public class Game {
     }
 
     public void run() throws IOException {
-        draw();
-        KeyStroke key = screen.readInput();
-        processKey(key);
+
         boolean play = true;
         while (play == true) {
-            if (key.getKeyType() == KeyType.ArrowLeft) {
-                y = y - 1;
-                break;
-            }
-            if (key.getKeyType() == KeyType.ArrowRight) {
-                y = y + 1;
-                break;
-            }
-            if (key.getKeyType() == KeyType.ArrowUp) {
-                x = x - 1;
-                break;
-            }
-            if (key.getKeyType() == KeyType.ArrowDown) {
-                x = x + 1;
-                break;
-            }
-            if (key.getKeyType() == KeyType.EOF) {
-                play = false;
-                break;
-            }
-            if (key.getKeyType() == KeyType.Character) {
-                if (key.getCharacter() == 'q') {
-                    screen.close();
-                    break;
-                }
-            }
+            draw();
+            KeyStroke key = screen.readInput();
+            processKey(key);
         }
     }
     private void processKey(KeyStroke key) {
+        if (key.getKeyType() == KeyType.ArrowLeft) {
+            x = x - 1;
+
+        }
+        if (key.getKeyType() == KeyType.ArrowRight) {
+            x = x + 1;
+
+        }
+        if (key.getKeyType() == KeyType.ArrowUp) {
+            y = y - 1;
+
+        }
+        if (key.getKeyType() == KeyType.ArrowDown) {
+            y = y + 1;
+
+        }
+        if (key.getKeyType() == KeyType.EOF) {
+
+
+        }
+        if (key.getKeyType() == KeyType.Character) {
+            if (key.getCharacter() == 'q') {
+                try {
+                    screen.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
             System.out.println(key);
     }
 
