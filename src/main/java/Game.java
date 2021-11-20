@@ -5,11 +5,14 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+
 import java.io.IOException;
+
 public class Game {
     //Attributes
     private Hero hero;
     private Screen screen;
+    private Arena arena;
 
     //Methods
     public Game() {
@@ -25,6 +28,7 @@ public class Game {
 
             Position position = new Position(10, 10);
             this.hero = new Hero(position);
+            this.arena=new Arena(40,40,hero);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,38 +40,12 @@ public class Game {
             draw();
             KeyStroke key = screen.readInput();
             processKey(key);
-            switch (key.getKeyType()) {
-                case ArrowUp:
-
-                    moveHero(hero.moveUp());
-                    break;
-                case ArrowDown:
-
-                    moveHero(hero.moveDown());
-                    break;
-                case ArrowRight:
-
-                    moveHero(hero.moveRight());
-                    break;
-                case ArrowLeft:
-
-                    moveHero(hero.moveLeft());
-                    break;
-                case Character:
-                    if (key.getCharacter() == 'q') {
-                        this.screen.close();
-                    }
-                    break;
-                case EOF:
-                    playing = false;
-                    break;
-            }
         }
     }
 
     private void draw() throws IOException {
         screen.clear();
-        hero.draw(screen);
+        arena.draw(screen);
         screen.refresh();
     }
 
@@ -77,33 +55,35 @@ public class Game {
 
     private void processKey(KeyStroke key) throws IOException {
 
-        switch (key.getKeyType()) {
-            case ArrowUp:
+            switch (key.getKeyType()) {
+                case ArrowUp:
 
-                moveHero(hero.moveUp());
-                break;
-            case ArrowDown:
+                    arena.moveHero(hero.moveUp());
+                    break;
+                case ArrowDown:
 
-                moveHero(hero.moveDown());
-                break;
-            case ArrowRight:
+                    arena.moveHero(hero.moveDown());
+                    break;
+                case ArrowRight:
 
-                moveHero(hero.moveRight());
-                break;
-            case ArrowLeft:
+                    arena.moveHero(hero.moveRight());
+                    break;
+                case ArrowLeft:
 
-                moveHero(hero.moveLeft());
-                break;
-            case Character:
-                if (key.getCharacter() == 'q') {
-                    this.screen.close();
-                }
-                break;
-            case EOF:
-                break;
+                    arena.moveHero(hero.moveLeft());
+                    break;
+                case Character:
+                    if (key.getCharacter() == 'q') {
+                        this.screen.close();
+                    }
+                    break;
+                case EOF:
+                    break;
 
 
+            }
+            System.out.println(key);
         }
-        System.out.println(key);
-    }
+
+
 }
