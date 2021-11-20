@@ -1,89 +1,109 @@
+
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-
 import java.io.IOException;
-
 public class Game {
-    // private int x = 10;
-    //private int y = 10;
+    //Attributes
     private Hero hero;
+    private Screen screen;
 
-
-    private static Screen screen;
-
+    //Methods
     public Game() {
-
-
         try {
             TerminalSize terminalSize = new TerminalSize(40, 20);
-            DefaultTerminalFactory terminalFactory = new
-                    DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
+            DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
             Terminal terminal = terminalFactory.createTerminal();
-            screen = new TerminalScreen(terminal);
-            screen.setCursorPosition(null); // we don't need cursor
-            screen.startScreen(); // screens must be started
-            screen.doResizeIfNecessary(); // resize screen if necessary
-            Hero hero = new Hero(10, 10);
+            this.screen = new TerminalScreen(terminal);
+            this.screen.setCursorPosition(null); //don't need a cursor
+            this.screen.startScreen(); //start screen
+            this.screen.doResizeIfNecessary(); //resize if needed
+
+
+            Position position = new Position(10, 10);
+            this.hero = new Hero(position);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void run() throws IOException {
-
-        boolean play = true;
-        while (play == true) {
+        boolean playing = true;
+        while (playing) {
             draw();
             KeyStroke key = screen.readInput();
             processKey(key);
-        }
-    }
+            switch (key.getKeyType()) {
+                case ArrowUp:
 
-    private void processKey(KeyStroke key) {
-        if (key.getKeyType() == KeyType.ArrowLeft) {
-            hero.moveLeft();
+                    moveHero(hero.moveUp());
+                    break;
+                case ArrowDown:
 
-        }
-        if (key.getKeyType() == KeyType.ArrowRight) {
-            hero.moveRight();
-        }
-        if (key.getKeyType() == KeyType.ArrowUp) {
-            hero.moveUp();
+                    moveHero(hero.moveDown());
+                    break;
+                case ArrowRight:
 
-        }
-        if (key.getKeyType() == KeyType.ArrowDown) {
-            hero.moveDown();
+                    moveHero(hero.moveRight());
+                    break;
+                case ArrowLeft:
 
-        }
-        if (key.getKeyType() == KeyType.EOF) {
-
-
-        }
-        if (key.getKeyType() == KeyType.Character) {
-            if (key.getCharacter() == 'q') {
-                try {
-                    screen.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                    moveHero(hero.moveLeft());
+                    break;
+                case Character:
+                    if (key.getCharacter() == 'q') {
+                        this.screen.close();
+                    }
+                    break;
+                case EOF:
+                    playing = false;
+                    break;
             }
         }
-        System.out.println(key);
     }
 
     private void draw() throws IOException {
         screen.clear();
         hero.draw(screen);
         screen.refresh();
+    }
+
+    private void moveHero(Position position) {
+        hero.setPosition(position);
+    }
+
+    private void processKey(KeyStroke key) throws IOException {
+
+        switch (key.getKeyType()) {
+            case ArrowUp:
+
+                moveHero(hero.moveUp());
+                break;
+            case ArrowDown:
+
+                moveHero(hero.moveDown());
+                break;
+            case ArrowRight:
+
+                moveHero(hero.moveRight());
+                break;
+            case ArrowLeft:
+
+                moveHero(hero.moveLeft());
+                break;
+            case Character:
+                if (key.getCharacter() == 'q') {
+                    this.screen.close();
+                }
+                break;
+            case EOF:
+                break;
 
 
+        }
+        System.out.println(key);
     }
 }
