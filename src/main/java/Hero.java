@@ -1,30 +1,45 @@
+
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.screen.Screen;
-
 import java.io.IOException;
 
 public class Hero {
-//private Position position
-      private int x;
-      private int y;
-    private static Screen screen;
-    public  Hero(int x,int y) {
-        this.x = x;
-        this.y = y;
-    }
-        public  void moveUp() {
-            this.y = this.y + 1;
+
+    private Position position;
+
+
+    public Hero(Position position){
+            this.position = position;
         }
-        public  void moveRight() {
-            this.x = this.x + 1;
-        }
-        public  void moveDown () {
-            this.y=this.y-1;
-        }
-        public  void moveLeft () {
-            this.x = this.x - 1;
-        }
-    public  void draw(Screen screen) throws IOException {
-        Hero.screen.setCharacter(x, y, TextCharacter.fromCharacter('X')[0]);
-        }
-}
+
+
+            public Position moveUp() {
+                return new Position(position.getX(),
+                        position.getY() - 1);
+            }
+
+
+                public Position moveDown(){
+                    return new Position(position.getX(),
+                            position.getY() + 1);
+                }
+
+                    public Position moveLeft(){
+                        return new Position(position.getX() - 1,
+                                position.getY());
+                    }
+
+                        public Position moveRight(){
+                            return new Position(position.getX() +1,
+                                    position.getY());
+                        }
+
+                        public void setPosition(Position position) {
+                            this.position = position;
+                        }
+
+                        public void draw(Screen screen) throws IOException {
+
+                            screen.setCharacter(position.getX(), position.getY(), TextCharacter.fromCharacter('X')[0]);
+                        }
+                    }
