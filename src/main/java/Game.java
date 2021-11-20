@@ -10,12 +10,15 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 
 public class Game {
-    private int x = 10;
-    private int y = 10;
+    // private int x = 10;
+    //private int y = 10;
+    private Hero hero;
+
 
     private static Screen screen;
 
     public Game() {
+
 
         try {
             TerminalSize terminalSize = new TerminalSize(40, 20);
@@ -26,7 +29,7 @@ public class Game {
             screen.setCursorPosition(null); // we don't need cursor
             screen.startScreen(); // screens must be started
             screen.doResizeIfNecessary(); // resize screen if necessary
-
+            Hero hero = new Hero(10, 10);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,21 +45,21 @@ public class Game {
             processKey(key);
         }
     }
+
     private void processKey(KeyStroke key) {
         if (key.getKeyType() == KeyType.ArrowLeft) {
-            x = x - 1;
+            hero.moveLeft();
 
         }
         if (key.getKeyType() == KeyType.ArrowRight) {
-            x = x + 1;
-
+            hero.moveRight();
         }
         if (key.getKeyType() == KeyType.ArrowUp) {
-            y = y - 1;
+            hero.moveUp();
 
         }
         if (key.getKeyType() == KeyType.ArrowDown) {
-            y = y + 1;
+            hero.moveDown();
 
         }
         if (key.getKeyType() == KeyType.EOF) {
@@ -73,17 +76,14 @@ public class Game {
 
             }
         }
-            System.out.println(key);
+        System.out.println(key);
     }
 
-    private void draw() {
+    private void draw() throws IOException {
         screen.clear();
-        screen.setCharacter(x,y, TextCharacter.fromCharacter('X')[0]);
-        try {
-            screen.refresh();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        hero.draw(screen);
+        screen.refresh();
+
 
     }
 }
