@@ -54,7 +54,8 @@ public class Game {
     }
 
     private void processKey(KeyStroke key) throws IOException {
-
+        Boolean playing=true;
+        while(playing==true){
             switch (key.getKeyType()) {
                 case ArrowUp:
 
@@ -75,12 +76,15 @@ public class Game {
                 case Character:
                     if (key.getCharacter() == 'q') {
                         this.screen.close();
+                        playing = false;
+                        break;
                     }
                     break;
                 case EOF:
+                    playing = false;
                     break;
 
-
+            }
             }
             System.out.println(key);
         }
