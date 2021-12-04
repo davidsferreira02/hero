@@ -10,8 +10,7 @@ import java.io.IOException;
 
 public class Game {
     //Attributes
-    private Hero hero;
-    private Screen screen;
+     static Screen screen;
     private Arena arena;
 
     //Methods
@@ -26,9 +25,7 @@ public class Game {
             this.screen.doResizeIfNecessary(); //resize if needed
 
 
-            Position position = new Position(10, 10);
-            this.hero = new Hero(position);
-            this.arena=new Arena(40,40,hero);
+            this.arena = new Arena(40, 40);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,55 +36,24 @@ public class Game {
         while (playing) {
             draw();
             KeyStroke key = screen.readInput();
-            processKey(key);
+            playing=processKey(key);
         }
     }
 
     private void draw() throws IOException {
         screen.clear();
-        arena.draw(screen);
+        arena.draw(screen.newTextGraphics());
         screen.refresh();
+
+
     }
 
-    private void moveHero(Position position) {
-        hero.setPosition(position);
+
+
+    private boolean processKey(KeyStroke key) throws IOException {
+        return arena.processKey(key);
     }
-
-    private void processKey(KeyStroke key) throws IOException {
-        Boolean playing=true;
-        while(playing==true){
-            switch (key.getKeyType()) {
-                case ArrowUp:
-
-                    arena.moveHero(hero.moveUp());
-                    break;
-                case ArrowDown:
-
-                    arena.moveHero(hero.moveDown());
-                    break;
-                case ArrowRight:
-
-                    arena.moveHero(hero.moveRight());
-                    break;
-                case ArrowLeft:
-
-                    arena.moveHero(hero.moveLeft());
-                    break;
-                case Character:
-                    if (key.getCharacter() == 'q') {
-                        this.screen.close();
-                        playing = false;
-                        break;
-                    }
-                    break;
-                case EOF:
-                    playing = false;
-                    break;
-
-            }
-            }
-            System.out.println(key);
-        }
-
-
 }
+
+
+
